@@ -22,12 +22,23 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install .
-          python -m pip install pytest
+          python -m pip install pytest pytest-md
       - name: Test with pytest
-        run: pytest --junitxml=junit/test-results-${{ matrix.python-version }}.xml
-      - name: Upload pytest test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: pytest-results-${{ matrix.python-version }}
-          path: junit/test-results-${{ matrix.python-version }}.xml
-        if: ${{ always() }}
+        run: |
+          REPORT=${{ matrix.python-version }}.md
+          pytest --md $REPORT
+      - name: Add report to summary
+        if: always()
+        run: |
+          echo "::group::..."
+          FINAL_REPORT="$(mktemp)"
+          echo "# ${{ inputs.report-title }}" > "$FINAL_REPORT"
+          echo "<details><summary>Click to expand!</summary>" >> "$FINAL_REPORT"
+          tail -n+2 "${{ steps.pytest.outputs.report-path }}" >> "$FINAL_REPORT"
+          echo "</details>" >> "$FINAL_REPORT"
+          cat "$FINAL_REPORT" >> "$GITHUB_STEP_SUMMARY"
+          echo "::endgroup::"
+          echo
+          echo "====================================================================================="
+          echo Markdown summaries: "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          echo "====================================================================================="
