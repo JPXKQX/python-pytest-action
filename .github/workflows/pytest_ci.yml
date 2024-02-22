@@ -1,8 +1,9 @@
 name: Run pkg tests (pytest)
 
 on:
-  - push
-  - pull_request
+  pull_request:
+    branches:
+      - main
 
 jobs:  
   build:  
