@@ -1,1 +1,1 @@
-# python-pytest-action
+# Test repository for pytest GitHub action
