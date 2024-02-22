@@ -25,13 +25,13 @@ jobs:
           python -m pip install pytest pytest-md
       - name: Test with pytest
         run: |
-          REPORT=${{ matrix.python-version }}.md
+          REPORT=pytest_${{ matrix.python-version }}.md
           pytest --md $REPORT
       - name: Add report to summary
         if: always()
         run: |
           echo "::group::..."
-          FINAL_REPORT="$(mktemp)"
+          FINAL_REPORT=pytest_report_${{ matrix.python-version }}.md
           echo "# ${{ inputs.report-title }}" > "$FINAL_REPORT"
           echo "<details><summary>Click to expand!</summary>" >> "$FINAL_REPORT"
           tail -n+2 "${{ steps.pytest.outputs.report-path }}" >> "$FINAL_REPORT"
