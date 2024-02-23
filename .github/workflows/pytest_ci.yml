@@ -24,6 +24,7 @@ jobs:
           python -m pip install .
           python -m pip install pytest pytest-md
       - name: Test with pytest
+        id: pytest
         run: |
           REPORT=pytest_${{ matrix.python-version }}.md
           pytest --md $REPORT
