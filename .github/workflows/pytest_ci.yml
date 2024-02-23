@@ -28,14 +28,14 @@ jobs:
         run: |
           REPORT=pytest_${{ matrix.python-version }}.md
           echo "report-path=$REPORT" >> $GITHUB_OUTPUT
-          pytest --md $REPORT
+          pytest --verbose --md $REPORT
         shell: bash -el {0}
       - name: Add report to summary
         if: always()
         run: |
           echo "::group::..."
           FINAL_REPORT=pytest_report_${{ matrix.python-version }}.md
-          echo "# Test report (via pytest)" > "$FINAL_REPORT"
+          echo "# Test report (python ${{ matrix.python-version }})" > "$FINAL_REPORT"
           echo "<details><summary>Click to expand!</summary>" >> "$FINAL_REPORT"
           tail -n+2 "${{ steps.pytest.outputs.report-path }}" >> "$FINAL_REPORT"
           echo "</details>" >> "$FINAL_REPORT"
