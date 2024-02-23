@@ -36,7 +36,7 @@ jobs:
           FINAL_REPORT=pytest_report_${{ matrix.python-version }}.md
           echo "# Test report (via pytest)" > "$FINAL_REPORT"
           echo "<details><summary>Click to expand!</summary>" >> "$FINAL_REPORT"
-          tail -n+2 "${{ steps.pytest.outputs.report-path }}" >> "$FINAL_REPORT"
+          tail -n+2 "$REPORT" >> "$FINAL_REPORT"
           echo "</details>" >> "$FINAL_REPORT"
           cat "$FINAL_REPORT" >> "$GITHUB_STEP_SUMMARY"
           echo "::endgroup::"
